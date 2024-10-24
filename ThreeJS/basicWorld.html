@@ -8,7 +8,8 @@
       {
         "imports": {
           "three": "./three.js/build/three.module.js",
-          "orbitControls": "./three.js/examples/jsm/controls/OrbitControls.js"
+          "orbitControls": "./three.js/examples/jsm/controls/OrbitControls.js",
+          "dat.gui": "./dat.gui/dat.gui.module.js"
         }
       }
     </script>
@@ -23,12 +24,39 @@
     <script type="module" defer>
       import { createWorld } from "./basicWorld.js";
       import * as THREE from "three";
+      import * as dat from "dat.gui";
 
       const deg = Math.PI / 180;
       
       const objectThree = {
         cube: null,
         cylinder: null
+      }
+
+      function createGUI(){
+        const rotStep = 0.5 * deg;
+        const rotMin = 0;
+        const rotMax = 360 * deg;
+        const posStep = 0.001;
+        const posMin = -5;
+        const posMax = 5;
+        const gui = new dat.GUI();
+        let folder = gui.addFolder("Cube");
+        /*cube rotation*/
+        folder.add(objectThree.cube.rotation, "x", rotMin, rotMax, rotStep).name("Rotation X");
+        folder.add(objectThree.cube.rotation, "y", rotMin, rotMax, rotStep).name("Rotation Y");
+        folder.add(objectThree.cube.rotation, "z", rotMin, rotMax, rotStep).name("Rotation Z");
+        /*cube position*/
+        folder.add(objectThree.cube.position, "x", posMin, posMax, posStep).name("Position X");
+        folder.add(objectThree.cube.position, "y", posMin, posMax, posStep).name("Position Y");
+        folder.add(objectThree.cube.position, "z", posMin, posMax, posStep).name("Position Z");
+        folder.open();
+        folder = gui.addFolder("Cylinder");
+        /*cylinder rotation*/
+        folder.add(objectThree.cylinder.rotation, "x", rotMin, rotMax, rotStep).name("Rotation X");
+        folder.add(objectThree.cylinder.rotation, "y", rotMin, rotMax, rotStep).name("Rotation Y");
+        folder.add(objectThree.cylinder.rotation, "z", rotMin, rotMax, rotStep).name("Rotation Z");
+        folder.open();
       }
 
       function createObjects(aScene){
@@ -59,6 +87,7 @@
       }
 
       createWorld(createObjects);
+      createGUI();
 
     </script>
   </body>

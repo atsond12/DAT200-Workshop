@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic 3D World</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./three.js/build/three.module.js",
+          "orbitControls": "./three.js/examples/jsm/controls/OrbitControls.js",
+          "dat.gui": "./dat.gui/dat.gui.module.js"
+        }
+      }
+    </script>
+    <style>
+      html body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module" defer>
+      import { createWorld } from "./basicWorld.js";
+      import * as THREE from "three";
+      import * as dat from "dat.gui";
+
+      const deg = Math.PI / 180;
+      
+      const objectThree = {
+        cube: null,
+        cylinder: null
+      }
+
+      function createGUI(){
+        const gui = new dat.GUI();
+        let folder = gui.addFolder("ABB Robot");
+        folder.open();
+      }
+
+      function createObjects(aScene){
+      
+      }
+
+      createWorld(createObjects);
+      createGUI();
+
+    </script>
+  </body>
+</html>
