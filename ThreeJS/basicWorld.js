@@ -1,12 +1,14 @@
 "use strict";
 import * as THREE from "three";
+import { OrbitControls } from "orbitControls";
+
 const world = {
   scene: null,
   camera: null,
   renderer: null,
 };
 const deg = Math.PI / 180;
-const backgroundColor = "#000000";
+const backgroundColor = "#aaaaaa";
 
 function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
@@ -29,8 +31,8 @@ export function createWorld() {
   const lightIntensity = 1;
 
   world.scene = new THREE.Scene();
-  world.scene.backgroundColor = backgroundColor;
-  world.scene.fog = new THREE.Fog(backgroundColor, 1, 5000);
+  world.scene.background = new THREE.Color(backgroundColor);
+  world.scene.fog = new THREE.Fog(backgroundColor, groundPlaneSize/5, groundPlaneSize/2);
   /* Here is a nice place to add lights */
   let light = new THREE.AmbientLight(lightColor, lightIntensity);
   world.scene.add(light);
@@ -43,6 +45,10 @@ export function createWorld() {
   mesh.rotation.x = -90 * deg;
   mesh.receiveShadow = true;
   world.scene.add(mesh);
+
+  /* Create a grid helper */
+  let helper = new THREE.GridHelper(groundPlaneSize, groundPlaneSize);
+  world.scene.add(helper);
 
   /* Here is a nice place to add objects */
 
@@ -58,6 +64,10 @@ export function createWorld() {
   world.renderer.setPixelRatio(window.devicePixelRatio);
   world.renderer.shadowMap.enabled = true;
   document.body.appendChild(world.renderer.domElement);
+
+  /* Create OrbitControls */
+  let controls = new OrbitControls(world.camera, world.renderer.domElement);
+  controls.update();
 
   renderScene();
   window.addEventListener("resize", windowResize);
