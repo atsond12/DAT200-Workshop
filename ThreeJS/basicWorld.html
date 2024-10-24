@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic 3D World</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./three.js/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <script type="module" defer>
+      import { createWorld } from "./basicWorld.js";
+      createWorld();
+    </script>
+  </body>
+</html>
