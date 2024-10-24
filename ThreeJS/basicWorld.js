@@ -17,6 +17,12 @@ function renderScene() {
   requestAnimationFrame(renderScene);
 }
 
+function windowResize() {
+  world.camera.aspect = getAspectRatio();
+  world.camera.updateProjectionMatrix();
+  world.renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
 export function createWorld() {
   const groundPlaneSize = 150; 
   const lightColor = "#ffffff";
@@ -54,5 +60,5 @@ export function createWorld() {
   document.body.appendChild(world.renderer.domElement);
 
   renderScene();
-
+  window.addEventListener("resize", windowResize);
 }
