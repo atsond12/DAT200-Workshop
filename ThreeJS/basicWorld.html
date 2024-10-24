@@ -22,7 +22,44 @@
   <body>
     <script type="module" defer>
       import { createWorld } from "./basicWorld.js";
-      createWorld();
+      import * as THREE from "three";
+
+      const deg = Math.PI / 180;
+      
+      const objectThree = {
+        cube: null,
+        cylinder: null
+      }
+
+      function createObjects(aScene){
+        let geo = new THREE.BoxGeometry(1, 1, 1);
+        // set pivot point to the bottom of the cube
+        geo.translate(0, 0.5, 0);
+        let mat = new THREE.MeshStandardMaterial({ color: 0x40ff40 });
+        mat.metalness = 0.8;
+        objectThree.cube = new THREE.Mesh(geo, mat);
+        objectThree.cube.castShadow = true;
+        objectThree.cube.receiveShadow = true;
+        /*add axix helper*/
+        objectThree.cube.add( new THREE.AxesHelper(5));
+        objectThree.cube.rotation.x = 45 * deg;
+        aScene.add(objectThree.cube);
+
+        /*create cylinder*/
+        geo = new THREE.CylinderGeometry(0.15, 0.15, 2, 32);
+        geo.translate(0, 1, 0);
+        mat = new THREE.MeshStandardMaterial({ color: 0xff4040 });
+        mat.metalness = 0.8;
+        objectThree.cylinder = new THREE.Mesh(geo, mat);
+        objectThree.cylinder.castShadow = true;
+        objectThree.cylinder.receiveShadow = true;
+        objectThree.cylinder.position.y = 1;
+        objectThree.cylinder.rotation.x = -45 * deg;
+        objectThree.cube.add(objectThree.cylinder);
+      }
+
+      createWorld(createObjects);
+
     </script>
   </body>
 </html>
