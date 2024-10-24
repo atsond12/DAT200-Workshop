@@ -9,7 +9,8 @@
         "imports": {
           "three": "./three.js/build/three.module.js",
           "orbitControls": "./three.js/examples/jsm/controls/OrbitControls.js",
-          "dat.gui": "./dat.gui/dat.gui.module.js"
+          "dat.gui": "./dat.gui/dat.gui.module.js",
+          "GLTFLoader": "./three.js/examples/jsm/Loaders/GLTFLoader.js"
         }
       }
     </script>
@@ -25,26 +26,65 @@
       import { createWorld } from "./basicWorld.js";
       import * as THREE from "three";
       import * as dat from "dat.gui";
+      import { GLTFLoader } from "GLTFLoader";
 
       const deg = Math.PI / 180;
       
-      const objectThree = {
-        cube: null,
-        cylinder: null
+      let scene = null;
+      let base = null;
+      let link_01 = null;
+      let link_02 = null;
+      let link_03 = null;
+      let link_04 = null;
+      let link_05 = null;
+
+      function gltfElementLoaded(aElement){
+        console.log(aElement.name);
+        if(aElement.name == "Base"){
+          base = aElement;
+        } else if(aElement.name == "Link_01"){
+          link_01 = aElement;
+        }else if(aElement.name == "Link_02"){
+          link_02 = aElement;
+        }else if(aElement.name == "Link_03"){
+          link_03 = aElement;
+        }else if(aElement.name == "Link_04"){
+          link_04 = aElement;
+        }else if(aElement.name == "Link_05"){
+          link_05 = aElement;
+        }
+        if(aElement.isMesh){
+          aElement.castShadow = true;
+          aElement.receiveShadow = true;
+        }
+      }
+
+      function gltfFileLoaded(aFile){
+        aFile.scene.traverse(gltfElementLoaded);
+        scene.add(aFile.scene);
+        createGUI();
       }
 
       function createGUI(){
         const gui = new dat.GUI();
         let folder = gui.addFolder("ABB Robot");
+        folder.add(link_01.rotation, "y", -180 * deg, 180 * deg).name("Link 01 Y");
+        folder.add(link_02.rotation, "z", -180 * deg, 180 * deg).name("Link 02 Z");
+        folder.add(link_03.rotation, "z", -180 * deg, 180 * deg).name("Link 03 Z");
+        folder.add(link_04.rotation, "x", -180 * deg, 180 * deg).name("Link 04 X");
+        folder.add(link_05.rotation, "z", -180 * deg, 180 * deg).name("Link 05 Z");
         folder.open();
       }
 
       function createObjects(aScene){
-      
+        scene = aScene;
+        /* Load the ABB Robot file */
+        const loader = new GLTFLoader();
+        loader.load("./models/ABB_Robot_01.gltf", gltfFileLoaded)
       }
 
       createWorld(createObjects);
-      createGUI();
+  
 
     </script>
   </body>

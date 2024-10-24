@@ -28,7 +28,7 @@ function windowResize() {
 export function createWorld(createObjectsFunction) {
   const groundPlaneSize = 150; 
   const lightColor = "#ffffff";
-  const lightIntensity = 1;
+  const lightIntensity = 2;
 
   world.scene = new THREE.Scene();
   world.scene.background = new THREE.Color(backgroundColor);
