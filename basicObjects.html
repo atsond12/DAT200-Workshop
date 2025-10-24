@@ -20,7 +20,9 @@
   </head>
   <body>
   <script type="module" defer>
-      //document.body.appendChild(renderer.domElement);
+      import { world } from "./simpleWorld.js";
+
+      document.body.appendChild(world.renderer.domElement);
     </script>
   </body>
 </html>
