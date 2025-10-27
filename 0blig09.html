@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <title>Simple 3D World</title>
+    <title>Oblig 9 Pyramide</title>
 
     <style>
       body {
@@ -30,30 +30,6 @@
       import { world } from "./simpleWorld.js";
       import * as THREE from "three";
 
-      function addBox(aParent){
-        const geo = new THREE.BoxGeometry(5, 5, 5);
-        geo.translate(0, -2.5, 0);
-        const mat = new THREE.MeshPhongMaterial({color: "#00FF00", shininess: 100});
-        const box = new THREE.Mesh(geo, mat);
-        box.position.set(0, 5, 0);
-        box.rotation.y = 45 * Math.PI / 180;
-        aParent.add(box);
-        const axes = new THREE.AxesHelper(10);
-        box.add(axes);
-        return box;
-      }
-
-      function addCylinder(aParent){
-        const geo = new THREE.CylinderGeometry(0.5, 0.5 , 5, 30);
-        geo.translate(0, 2.5, 0);
-        const mat = new THREE.MeshPhongMaterial({color: "#0000FF", shininess: 100});
-        const cyl = new THREE.Mesh(geo, mat);
-        cyl.rotation.x = 45 * Math.PI / 180;
-        aParent.add(cyl); 
-      }
-
-      const box = addBox(world.scene);
-      addCylinder(box);
       document.body.appendChild(world.renderer.domElement);
     </script>
   </body>
