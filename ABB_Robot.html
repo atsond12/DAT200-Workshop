@@ -27,34 +27,38 @@
     </script>
   </head>
   <body>
-  <script type="module" defer>
+    <script type="module" defer>
       import { world } from "./simpleWorld.js";
       import * as THREE from "three";
       import { GLTFLoader } from "GLTFLoader";
+      import * as dat from "dat.GUI";
 
-      const deg = Math.PI/180;
-      const abbModel = {};
+      const deg = Math.PI / 180;
+      const abbModel = {
+        baseRotSpeed: 0,
+      };
       //----- Functions -----------------------------------------
 
-      function ABBModelObjectLoad(aObject){
-        if(aObject.isMesh){
+      function ABBModelObjectLoad(aObject) {
+        if (aObject.isMesh) {
           aObject.castShadow = true;
           aObject.receiveShadow = true;
-        }else if(aObject.isGroup){
+        } else if (aObject.isGroup) {
           abbModel[aObject.name] = aObject;
         }
-       }
+      }
 
-      function ABBModelOnLoad(aGLTF){
+      function ABBModelOnLoad(aGLTF) {
         console.log("ABB model loading . . ." + aGLTF.toString());
         const abbRobot = aGLTF.scene;
         aGLTF.scene.traverse(ABBModelObjectLoad);
         abbRobot.scale.set(7, 7, 7);
         world.scene.add(abbRobot);
         setInterval(animate, 20);
+        addGUI();
       }
 
-      function addSpotLight(){
+      function addSpotLight() {
         const light = new THREE.SpotLight("#FFFFFF", 20);
         light.position.set(2, 25, 2);
         light.angle = 30 * deg;
@@ -70,20 +74,46 @@
         world.scene.add(target);
         light.target = target;
         world.scene.add(light);
-        const helper = new THREE.SpotLightHelper(light);
-        world.scene.add(helper);
-
+        //const helper = new THREE.SpotLightHelper(light);
+        //world.scene.add(helper);
       }
 
-      function animate(){
-        abbModel["Link_01"].rotation.y += 1 * deg;
+      function addDirectionalLight() {
+        let light = new THREE.DirectionalLight("#FFFFFF", 0.5);
+        light.position.set(10, 10, 10);
+        world.scene.add(light);
+        light = new THREE.DirectionalLight("#FFFFFF", 0.5);
+        light.position.set(-10, 10, -10);
+        world.scene.add(light);
+      }
+
+      function animate() {
+        abbModel["Link_01"].rotation.y += abbModel.baseRotSpeed / 1000;
+      }
+
+      function addAtmosphere() {
+        world.scene.background = new THREE.Color("#AAAAAA");
+        world.scene.fog = new THREE.Fog("#AAAAAA", 1, 70);
+        world.renderer.setClearColor(world.scene.background, 1);
+      }
+
+      function addGUI() {
+        const gui = new dat.GUI();
+        const folder = gui.addFolder("ABB Robot");
+        folder.add(abbModel, "baseRotSpeed", -100, 100, 1).name("Base Rotation");
+        folder.add(abbModel["Link_02"].rotation, "z", -180 * deg, 60 * deg, 0.01).name("Shoulder");
+        folder.add(abbModel["Link_03"].rotation, "z", -45 * deg, 240 * deg, 0.01).name("Elbow");
+        folder.add(abbModel["Link_04"].rotation, "x", -360 * deg, 360 * deg, 0.01).name("Wrist");
+        folder.add(abbModel["Link_05"].rotation, "z", -130 * deg, 120 * deg, 0.01).name("Weld Gun");
+        folder.open();
       }
 
       //----- Main Code ------------------------------------------
       const loader = new GLTFLoader();
-
+      addAtmosphere();
       addSpotLight();
-      loader.load("./models/robot/ABB_Robot_01.gltf", ABBModelOnLoad)
+      addDirectionalLight();
+      loader.load("./models/robot/ABB_Robot_01.gltf", ABBModelOnLoad);
 
       document.body.appendChild(world.renderer.domElement);
     </script>

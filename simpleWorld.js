@@ -11,7 +11,7 @@ export const world = {
 const worldSize = 100;
 
 function addAmbientLight() {
-  const light = new THREE.AmbientLight("#FFFFFF", 1.4);
+  const light = new THREE.AmbientLight("#FFFFFF", 0.5);
   world.scene.add(light);
 }
 
