@@ -32,12 +32,33 @@
       import * as THREE from "three";
       import { GLTFLoader } from "GLTFLoader";
 
+      //----- Functions -----------------------------------------
+
       function ABBModelOnLoad(aGLTF){
         console.log("ABB model loading . . ." + aGLTF.toString());
         const abbRobot = aGLTF.scene;
+        abbRobot.scale.set(10,10,10);
         world.scene.add(abbRobot);
       }
+
+      function addSpotLight(){
+        const light = new THREE.SpotLight("#FFFFFF", 10);
+        light.position.set(2, 25, 2);
+
+        const target = new THREE.Object3D();
+        target.position.set(0, 0, 0);
+        world.scene.add(target);
+        light.target = target;
+        world.scene.add(light);
+        const helper = new THREE.SpotLightHelper(light);
+        world.scene.add(helper);
+
+      }
+
+      //----- Main Code ------------------------------------------
       const loader = new GLTFLoader();
+      
+      addSpotLight();
       loader.load("./models/robot/ABB_Robot_01.gltf", ABBModelOnLoad)
 
       document.body.appendChild(world.renderer.domElement);
