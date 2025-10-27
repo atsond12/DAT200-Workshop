@@ -22,6 +22,7 @@ function addGround() {
   mat.opacity = 0.5;
   const plane = new THREE.Mesh(geo, mat);
   plane.rotation.x = (90 * Math.PI) / 180;
+  plane.receiveShadow = true;
   world.scene.add(plane);
   const grid = new THREE.GridHelper(worldSize, worldSize / 5);
   world.scene.add(grid);
@@ -41,8 +42,10 @@ function windowResize() {
 }
 
 window.addEventListener("resize", windowResize, false);
-world.renderer.physicalCorrectionLights = false;
 world.renderer.shadowMap.enabled = true;
+world.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+world.renderer.physicallyCorrectLights = false;
+world.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 world.renderer.toneMappingExposure = 1.8;
 world.renderer.setSize(window.innerWidth, window.innerHeight);
 

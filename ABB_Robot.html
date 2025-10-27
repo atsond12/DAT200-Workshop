@@ -32,18 +32,38 @@
       import * as THREE from "three";
       import { GLTFLoader } from "GLTFLoader";
 
+      const deg = Math.PI/180;
+      const abbModel = {};
       //----- Functions -----------------------------------------
+
+      function ABBModelObjectLoad(aObject){
+        if(aObject.isMesh){
+          aObject.castShadow = true;
+          aObject.receiveShadow = true;
+        }else if(aObject.isGroup){
+          abbModel[aObject.name] = aObject;
+        }
+       }
 
       function ABBModelOnLoad(aGLTF){
         console.log("ABB model loading . . ." + aGLTF.toString());
         const abbRobot = aGLTF.scene;
-        abbRobot.scale.set(10,10,10);
+        aGLTF.scene.traverse(ABBModelObjectLoad);
+        abbRobot.scale.set(7, 7, 7);
         world.scene.add(abbRobot);
+        setInterval(animate, 20);
       }
 
       function addSpotLight(){
-        const light = new THREE.SpotLight("#FFFFFF", 10);
+        const light = new THREE.SpotLight("#FFFFFF", 20);
         light.position.set(2, 25, 2);
+        light.angle = 30 * deg;
+        light.distance = 50;
+        light.decay = 1;
+        //Shadow options
+        light.castShadow = true;
+        light.penumbra = 0.5;
+        light.shadow.bias = -0.0005;
 
         const target = new THREE.Object3D();
         target.position.set(0, 0, 0);
@@ -55,9 +75,13 @@
 
       }
 
+      function animate(){
+        abbModel["Link_01"].rotation.y += 1 * deg;
+      }
+
       //----- Main Code ------------------------------------------
       const loader = new GLTFLoader();
-      
+
       addSpotLight();
       loader.load("./models/robot/ABB_Robot_01.gltf", ABBModelOnLoad)
 
