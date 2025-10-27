@@ -34,6 +34,8 @@
 
       function ABBModelOnLoad(aGLTF){
         console.log("ABB model loading . . ." + aGLTF.toString());
+        const abbRobot = aGLTF.scene;
+        world.scene.add(abbRobot);
       }
       const loader = new GLTFLoader();
       loader.load("./models/robot/ABB_Robot_01.gltf", ABBModelOnLoad)
