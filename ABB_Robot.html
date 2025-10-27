@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <title>ABB Robot</title>
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+
+    <!-- Import map: map the bare specifier "three" to the local module build. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./lib/three.js-master/build/three.module.js",
+          "OrbitControls": "./lib/three.js-master/examples/jsm/controls/OrbitControls.js",
+          "dat.GUI": "./lib/dat.gui/dat.gui.module.js",
+          "Stats": "./lib/three.js-master/examples/jsm/libs/stats.module.js",
+          "GLTFLoader": "./lib/three.js-master/examples/jsm/loaders/GLTFLoader.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+  <script type="module" defer>
+      import { world } from "./simpleWorld.js";
+      import * as THREE from "three";
+      import { GLTFLoader } from "GLTFLoader";
+
+      function ABBModelOnLoad(aGLTF){
+        console.log("ABB model loading . . ." + aGLTF.toString());
+      }
+      const loader = new GLTFLoader();
+      loader.load("./models/robot/ABB_Robot_01.gltf", ABBModelOnLoad)
+
+      document.body.appendChild(world.renderer.domElement);
+    </script>
+  </body>
+</html>
